@@ -1,3 +1,6 @@
+# SHAM
+SHAM is an asset manager for games. It allows group to share, preview, and download assets like SFX, 3D Models, Tilemaps, Textures, and more. It allows teams to organize and version assets across projects. It also allows individual to catalog their asset purchases including tracking any licencing terms.
+
 # create-svelte
 
 Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte);
