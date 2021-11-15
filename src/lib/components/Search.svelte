@@ -1,17 +1,43 @@
 <script>
+    import Text from '$lib/components/Text.svelte';
+    import AssetRow from '$lib/components/AssetRow.svelte';
     let assets;
+    let error;
+    let requestInProgress = true;
 
     fetch('http://localhost:8000/assets')
         .then((response) => response.json())
-        .then((newAssets) => assets = newAssets);
+        .then((newAssets) => {
+            if (newAssets.status) {
+                throw newAssets;
+            }
+            requestInProgress = false;
+            assets = newAssets;
+        })
+        .catch((reason) => {
+            requestInProgress = false;
+            error = "Request failure " + reason;
+        });
 </script>
 
-<div>
-    <input type="text" class="pl-4 rounded-l-full h-8 w-64 border-t-4 border-l-4 border-b-4" placeholder="Search" /><button class="text-gray-300 w-8 rounded-r-full border-4 hover:bg-red-500">S</button>
+<div class="flex justify-center">
+    <div class="bg-black border border-gray-800">
+        <input type="text" class="w-auto pl-2 bg-black text-white" placeholder="Search" /><button class="text-gray-300 bg-gray-900 hover:bg-primary-500 px-2">S</button>
+    </div>
 </div>
 
-{#if assets}
-    {#each assets.asset as {name}}
-        <div class="text-gray-300">{name}</div>
-    {/each}
+{#if requestInProgress}
+    <Text>
+        Requesting...
+    </Text>
+{:else if error}
+    <Text>
+        {error}
+    </Text>
+{:else if assets}
+    <div class="flex flex-col divide-y divide-gray-800">
+        {#each assets.asset as {id, name}}
+            <AssetRow assetId={id}>{name}</AssetRow>
+        {/each}
+    </div>
 {/if}

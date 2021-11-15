@@ -7,6 +7,7 @@
     import Search from '$lib/components/Search.svelte';
     import Upload from '$lib/components/Upload.svelte';
     import { fade, fly } from 'svelte/transition';
+    import { sineIn, sineOut, expoIn, expoOut, circIn, circOut} from 'svelte/easing';
     import {page} from '$app/stores';
 
     let oldPath = '';
@@ -36,33 +37,42 @@
     not completely-broken by making each page a component.
 -->
 
-<div class="bg-gray-900" style="height: 100vh;">
-    <nav>
-        <button class="text-gray-300" class:growline={path!='/'} class:active={path=='/'} on:click={ () => setPath('/')}>Home</button>
-        <button class="text-gray-300" class:growline={path!='/search'} class:active={path=='/search'} on:click={ () => setPath('/search')}>Search</button>
-        <button class="text-gray-300" class:growline={path!='/upload'} class:active={path=='/upload'} on:click={ () => setPath('/upload')}>Upload</button>
-    </nav>
+<div class="h-screen overflow-hidden">
+    <div class="absolute h-16 w-full">
+        <div class="absolute h-16 w-full">
+            <div class="h-10 w-full bg-gray-900"></div>
+            <div class="h-6 w-full bg-gradient-to-b from-gray-900"></div>
+        </div>
+        <nav class="h-10 flex pt-2 justify-center gap-12">
+            <button class="text-gray-300" class:growline={path!='/'} class:active={path=='/'} on:click={ () => setPath('/')}>Home</button>
+            <button class="text-gray-300" class:growline={path!='/search'} class:active={path=='/search'} on:click={ () => setPath('/search')}>Search</button>
+            <button class="text-gray-300" class:growline={path!='/upload'} class:active={path=='/upload'} on:click={ () => setPath('/upload')}>Upload</button>
+        </nav>
+    </div>
 
-    {#if path == '/search'}
-        <h1 in:fly={{x: dir, duration: 250, delay: 250 }} out:fly={{x: -dir, duration: 250}}>
-            <Search/>
-        </h1>
-    {:else if path == '/upload'}
-        <h1 in:fly={{x: dir, duration: 250, delay: 250 }} out:fly={{x: -dir, duration: 250}}>
-            <Upload/>
-        </h1>
-    {:else if path == '/'}
-        <h1 in:fly={{x: dir, duration: 250, delay: 250 }} out:fly={{x: -dir, duration: 250}}>
-            <Home/>
-        </h1>
-    {:else}
-        <h1 in:fly={{x: dir, duration: 250, delay: 250 }} out:fly={{x: -dir, duration: 250}}>
-            Unknown page
-        </h1>
-    {/if}
+    <div class="h-full overflow-auto">
+        <div class="h-16"></div>
+        {#if path == '/search'}
+            <h1 in:fly={{x: dir, duration: 300, delay: 300, easing: sineOut }} out:fly={{x: -dir, duration: 300, easing: sineOut}}>
+                <Search/>
+            </h1>
+        {:else if path == '/upload'}
+            <h1 in:fly={{x: dir, duration: 300, delay: 300, easing: sineOut }} out:fly={{x: -dir, duration: 300, easing: sineOut}}>
+                <Upload/>
+            </h1>
+        {:else if path == '/'}
+            <h1 in:fly={{x: dir, duration: 300, delay: 300, easing: sineOut }} out:fly={{x: -dir, duration: 300, easing: sineOut}}>
+                <Home/>
+            </h1>
+        {:else}
+            <h1 in:fly={{x: dir, duration: 300, delay: 300, easing: sineOut }} out:fly={{x: -dir, duration: 300, easing: sineOut}}>
+                Unknown page
+            </h1>
+        {/if}
 
-    <!-- Suppress the slot-->
-    {#if false}<slot/>{/if}
+        <!-- Suppress the slot-->
+        {#if false}<slot/>{/if}
+    </div>
 </div>
 
 <style>
@@ -80,13 +90,14 @@
     left: 0;
     width: 100%;
     height: 0.1em;
-    background-color: blue;
+    /* TODO: should be "primary" as defined for tailwind */
+    background-color: #6D28D9;
 }
 
 /* Fade in */
 .growline::after {
     opacity: 0;
-    transition: opacity 300ms, transform 300ms;
+    transition: opacity 200ms, transform 200ms;
 }
 
 .growline:hover::after,
