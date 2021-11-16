@@ -18,11 +18,19 @@
             requestInProgress = false;
             error = "Request failure " + reason;
         });
+
+    function previewImageUrl(id, name) {
+        if (name.endsWith('.png')) {
+            return 'http://localhost:8000/assets/' + id + '.png';
+        }
+
+        return undefined;
+    }
 </script>
 
-<div class="flex justify-center">
+<div class="w-full flex justify-center pb-4">
     <div class="bg-black border border-gray-800">
-        <input type="text" class="w-auto pl-2 bg-black text-white" placeholder="Search" /><button class="text-gray-300 bg-gray-900 hover:bg-primary-500 px-2">S</button>
+        <input type="text" class="w-64 pl-2 bg-black text-white" placeholder="Search" /><button class="text-gray-500 bg-gray-900 hover:bg-primary-500 hover:text-gray-300 px-2 transition-colors ease-out duration-100">S</button>
     </div>
 </div>
 
@@ -37,7 +45,14 @@
 {:else if assets}
     <div class="flex flex-col divide-y divide-gray-800">
         {#each assets.asset as {id, name}}
-            <AssetRow assetId={id}>{name}</AssetRow>
+            <div on:click={() => console.log("selected asset")}>
+                <AssetRow
+                    assetId={id}
+                    previewImageUrl={previewImageUrl(id, name)}
+                >
+                    {name}
+                </AssetRow>
+            </div>
         {/each}
     </div>
 {/if}

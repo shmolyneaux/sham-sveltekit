@@ -37,8 +37,8 @@
     not completely-broken by making each page a component.
 -->
 
-<div class="h-screen overflow-hidden">
-    <div class="absolute h-16 w-full">
+<div class="">
+    <div class="sticky top-0 h-16 w-full">
         <div class="absolute h-16 w-full">
             <div class="h-10 w-full bg-gray-900"></div>
             <div class="h-6 w-full bg-gradient-to-b from-gray-900"></div>
@@ -50,8 +50,8 @@
         </nav>
     </div>
 
-    <div class="h-full overflow-auto">
-        <div class="h-16"></div>
+    <div class="h-full">
+        <!-- Leave space for the header -->
         {#if path == '/search'}
             <h1 in:fly={{x: dir, duration: 300, delay: 300, easing: sineOut }} out:fly={{x: -dir, duration: 300, easing: sineOut}}>
                 <Search/>
