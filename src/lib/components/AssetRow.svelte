@@ -3,7 +3,7 @@
     import Tag from '$lib/components/Tag.svelte';
     export let assetId;
     export let previewImageUrl;
-    export let selected = true;
+    export let selected = false;
 
     let result;
     let error;
