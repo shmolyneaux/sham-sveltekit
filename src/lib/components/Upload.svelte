@@ -1,4 +1,5 @@
 <script>
+    let uploadStatus = [];
     let dragHovering = false;
     let fileCount = 0;
 
@@ -15,7 +16,8 @@
         dragHovering = false;
         e.preventDefault();
 
-        for (var i = 0; i < e.dataTransfer.items.length; i++) {
+        uploadStatus = [];
+        for (let i = 0; i < e.dataTransfer.items.length; i++) {
             // Ignore things that aren't files
             if (e.dataTransfer.items[i].kind === 'file') {
                 var file = e.dataTransfer.items[i].getAsFile();
@@ -24,17 +26,23 @@
                 formData.append("file", file);
                 formData.append("filename", file.name);
 
+                uploadStatus.push("fetching");
+
                 fetch("http://localhost:8000/assets", {"method": "POST", "body": formData})
+                    .then(() => uploadStatus[i] = "")
+                    .catch((reason) => {
+                        uploadStatus[i] = reason;
+                    });
             }
         }
     }
 
     // NOTE: We return `false` from ondragover so that we don't get the default
-    // browser behavior when dropping files (IE opening them)
+    // browser behavior when dropping files (which would otherwise open them)
 </script>
 <div
     class="px-6 flex h-64 justify-center gap-8">
-    <label 
+    <label
         on:dragenter={dragEnter}
         on:dragleave={dragLeave}
         on:drop={fileDrop}
@@ -50,9 +58,14 @@
             {#if dragHovering}
                 Upload {fileCount} {fileCount > 1 ? 'Files' : 'File'}
             {:else}
-                Drop Assets Here {status}
+                Drop Assets Here
             {/if}
         </div>
         <input type="file" class="hidden" />
     </label>
 </div>
+{#each uploadStatus as status}
+    <div class="text-white">
+        {status}
+    </div>
+{/each}
