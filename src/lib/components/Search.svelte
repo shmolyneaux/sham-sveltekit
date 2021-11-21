@@ -47,11 +47,10 @@
         {#each assets.asset as {id, name}}
             <div on:click={() => console.log("selected asset")}>
                 <AssetRow
+                    assetName={name}
                     assetId={id}
                     previewImageUrl={previewImageUrl(id, name)}
-                >
-                    {name}
-                </AssetRow>
+                />
             </div>
         {/each}
     </div>

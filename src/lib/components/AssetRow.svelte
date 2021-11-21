@@ -1,6 +1,8 @@
 <script>
+    import AssetThumbnail from '$lib/components/AssetThumbnail.svelte';
     import Text from '$lib/components/Text.svelte';
     import Tag from '$lib/components/Tag.svelte';
+    export let assetName;
     export let assetId;
     export let previewImageUrl;
     export let selected = false;
@@ -21,7 +23,7 @@
         });
 </script>
 
-<div 
+<div
     class="p-2
         flex
         gap-3
@@ -31,19 +33,16 @@
     class:bg-primary-500={selected}
     class:bg-opacity-30={selected}
 >
-    <div class="overflow-hidden h-16 w-16 border border-gray-700 bg-gray-800 rounded-md">
-        {#if previewImageUrl}
-            <img src={previewImageUrl} />
+    <AssetThumbnail {assetName} {assetId} {previewImageUrl} />
+
+    <div class="flex flex-row gap-1 items-center">
+        <Text>{assetName}</Text>
+        {#if requestInProgress}
+            <Text>Requesting tags...</Text>
+        {:else if error}
+            <Text>{error}</Text>
+        {:else if result}
+            {#each result as tagId}<Tag {tagId} />{/each}
         {/if}
     </div>
-
-    {#if requestInProgress}
-        <Text>Requesting tags...</Text>
-    {:else if error}
-        <Text>{error}</Text>
-    {:else if result}
-        <div class="flex flex-row gap-1 items-center">
-            <Text><slot/></Text>{#each result as tagId}<Tag {tagId} />{/each}
-        </div>
-    {/if}
 </div>
