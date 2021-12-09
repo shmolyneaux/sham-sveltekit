@@ -28,6 +28,7 @@
         flex
         gap-3
         items-center
+        cursor-pointer
         hover:bg-primary-500 hover:bg-opacity-50
         transition-colors ease-out duration-300"
     class:bg-primary-500={selected}

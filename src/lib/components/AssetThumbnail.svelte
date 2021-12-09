@@ -37,7 +37,7 @@
     }
 </script>
 
-<div class="overflow-hidden h-16 w-16 border border-gray-700 bg-gray-800 rounded-md flex text-gray-500 hover:text-primary-500 transition-colors duration-200">
+<div class="overflow-hidden hover:shadow-xl transform hover:-translate-y-0.5 h-16 w-16 border border-gray-700 bg-gray-800 rounded-md flex text-gray-500 hover:ring-2 active:ring-2 ring-primary-500 hover:text-primary-500 transition-all duration-200">
     {#if previewImageUrl}
         <img src={previewImageUrl} />
     {:else if assetName.endsWith(".ogg")}

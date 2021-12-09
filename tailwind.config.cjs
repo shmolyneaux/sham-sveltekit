@@ -24,7 +24,10 @@ module.exports = {
         },
     },
     variants: {
-        extend: {},
+        transitionProperty: ['responsive', 'motion-safe', 'motion-reduce'],
+        extend: {
+            ringWidth: ['hover', 'active'],
+        },
     },
     plugins: [],
 }
